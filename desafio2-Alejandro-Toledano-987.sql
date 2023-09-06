@@ -46,41 +46,71 @@ VALUES (99, '01/08/2021', 'Página');
 SELECT *
 FROM INSCRITOS;
 ---------------Desafío 2 - Consultas Agrupadas--------------
---¿Cuántos registros hay?
+--¿Cuántos registros hay? --Listo
 SELECT count(*) as cantidad_registros
 FROM INSCRITOS;
---¿Cuántos inscritos hay en total?
+--¿Cuántos inscritos hay en total? --Listo
 SELECT sum(cantidad) as total_inscriptos
 FROM INSCRITOS;
 --¿Cuál o cuáles son los registros de mayor antigüedad? HINT: ocupar subconsultas
 
 
 --¿Cuántos inscritos hay por día? (entendiendo un día como una fecha distinta de ahora en adelante)
+--Listo
 SELECT fecha,
     sum(cantidad)
 FROM INSCRITOS
 GROUP BY fecha
 ORDER BY fecha;
 --¿Cuántos inscritos hay por fuente?
+--Listo
 SELECT fuente,
     sum(cantidad)
 FROM INSCRITOS
 GROUP BY fuente;
 /*¿Qué día se inscribió la mayor cantidad de personas?
  ¿Cuántas personas se inscribieron en ese día?*/
-SELECT fecha, sum(cantidad) as cantidad_inscritos FROM INSCRITOS GROUP BY fecha ORDER BY cantidad_inscritos DESC;
-
-SELECT 
+ --Lista
+SELECT fecha,
+    sum(cantidad) as cantidad_inscritos
+FROM INSCRITOS
+GROUP BY fecha
+ORDER BY cantidad_inscritos DESC
+LIMIT 1; 
 /*¿Qué días se inscribieron la mayor cantidad de personas utilizando el blog?
- ¿Cuántas personas fueron? HINT: si hay más de un registro, tomar el primero */
-
+¿Cuántas personas fueron? HINT: si hay más de un registro, tomar el primero */
+--Listo
+SELECT fecha, fuente,
+    sum(cantidad) as cantidad_inscritos
+FROM INSCRITOS
+WHERE fuente = 'Blog'
+GROUP BY fecha,fuente
+ORDER BY cantidad_inscritos DESC
+LIMIT 1;
 
 --¿Cuál es el promedio de personas inscritas por día?
-
+--Listo
+SELECT fecha,
+    avg(cantidad)
+FROM INSCRITOS
+GROUP BY fecha
+ORDER BY fecha;
 
 --¿Qué días se inscribieron más de 50 personas?
-
+--Listo
+SELECT fecha,
+    sum(cantidad)
+FROM INSCRITOS
+GROUP BY fecha
+ORDER BY fecha
+HAVING sum(cantidad) > 50;
 
 /*¿Cuál es el promedio diario de personas inscritas a partir del tercer día en adelante,
  considerando únicamente las fechas posteriores o iguales a la indicada?
  HINT: ingresa manualmente la fecha del tercer día*/
+--?????????????????
+SELECT avg(cantidad)
+FROM INSCRITOS
+WHERE fecha >= '01/02/2021' ;
+
+
