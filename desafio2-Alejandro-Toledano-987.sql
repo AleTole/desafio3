@@ -2,9 +2,9 @@
  desde el Shell nos tome el -(guion medio) para crear la BD*/
 CREATE DATABASE "desafio2-Alejandro-Toledano-987";
 /*Nos conectamos a la BD creada*/
---\c desafio2-Alejandro-Toledano-987;
+-- \c desafio2-Alejandro-Toledano-987;
 /*Eliminamos la Base de datos si es que existe*/
-DROP TABLE IF EXISTS INSCRITOS;
+-- DROP TABLE IF EXISTS INSCRITOS;
 /*Creamos la tabla dada en el desafio y sus datos*/
 CREATE TABLE IF NOT EXISTS INSCRITOS(cantidad INT, fecha DATE, fuente VARCHAR);
 INSERT INTO INSCRITOS(cantidad, fecha, fuente)
@@ -53,8 +53,13 @@ FROM INSCRITOS;
 SELECT sum(cantidad) as total_inscriptos
 FROM INSCRITOS;
 --¿Cuál o cuáles son los registros de mayor antigüedad? HINT: ocupar subconsultas
-
-
+--Listo
+SELECT *
+FROM INSCRITOS
+WHERE fecha = (
+        SELECT MIN(fecha)
+        FROM INSCRITOS
+    );
 --¿Cuántos inscritos hay por día? (entendiendo un día como una fecha distinta de ahora en adelante)
 --Listo
 SELECT fecha,
@@ -70,24 +75,25 @@ FROM INSCRITOS
 GROUP BY fuente;
 /*¿Qué día se inscribió la mayor cantidad de personas?
  ¿Cuántas personas se inscribieron en ese día?*/
- --Lista
+--Lista
 SELECT fecha,
     sum(cantidad) as cantidad_inscritos
 FROM INSCRITOS
 GROUP BY fecha
 ORDER BY cantidad_inscritos DESC
-LIMIT 1; 
+LIMIT 1;
 /*¿Qué días se inscribieron la mayor cantidad de personas utilizando el blog?
-¿Cuántas personas fueron? HINT: si hay más de un registro, tomar el primero */
+ ¿Cuántas personas fueron? HINT: si hay más de un registro, tomar el primero */
 --Listo
-SELECT fecha, fuente,
+SELECT fecha,
+    fuente,
     sum(cantidad) as cantidad_inscritos
 FROM INSCRITOS
 WHERE fuente = 'Blog'
-GROUP BY fecha,fuente
+GROUP BY fecha,
+    fuente
 ORDER BY cantidad_inscritos DESC
 LIMIT 1;
-
 --¿Cuál es el promedio de personas inscritas por día?
 --Listo
 SELECT fecha,
@@ -95,7 +101,6 @@ SELECT fecha,
 FROM INSCRITOS
 GROUP BY fecha
 ORDER BY fecha;
-
 --¿Qué días se inscribieron más de 50 personas?
 --Listo
 SELECT fecha,
@@ -104,13 +109,9 @@ FROM INSCRITOS
 GROUP BY fecha
 ORDER BY fecha
 HAVING sum(cantidad) > 50;
-
 /*¿Cuál es el promedio diario de personas inscritas a partir del tercer día en adelante,
  considerando únicamente las fechas posteriores o iguales a la indicada?
  HINT: ingresa manualmente la fecha del tercer día*/
---?????????????????
 SELECT avg(cantidad)
 FROM INSCRITOS
-WHERE fecha >= '01/02/2021' ;
-
-
+WHERE fecha >= '01/02/2021';
